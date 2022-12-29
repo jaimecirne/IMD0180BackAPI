@@ -11,6 +11,8 @@ namespace IMD0180BackAPI.Profile
             CreateMap<CreateUserDTO, User>();
             CreateMap<User, CreateUserDTO>();
             CreateMap<User, ShowUserDTO>();
+            CreateMap<User, UpdateUserDTO>();
+            CreateMap<UpdateUserDTO, User>();
         }
     }
 }

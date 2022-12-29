@@ -45,7 +45,7 @@ namespace IMD0180BackAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public IActionResult AddUser([FromBody] CreateUserDTO userDTO)
         {
             User user = _mapper.Map<User>(userDTO);
@@ -56,8 +56,8 @@ namespace IMD0180BackAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
-        public IActionResult UpdateUser(int id, [FromForm] UpdateUserDTO userDTO)
+        [Authorize(Roles = "admin")]
+        public IActionResult UpdateUser(int id, [FromBody] UpdateUserDTO userDTO)
         {
             User user = _context.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
@@ -65,6 +65,7 @@ namespace IMD0180BackAPI.Controllers
                 return NotFound();
             }
             user = _mapper.Map(userDTO, user);
+            user.Password = _criptoServices.Hash(userDTO.Login, userDTO.Password);
             _context.Update(user);
             _context.SaveChanges();
             return NoContent();
@@ -72,7 +73,7 @@ namespace IMD0180BackAPI.Controllers
 
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             User user = _context.Users.FirstOrDefault(u => u.Id == id);

@@ -8,5 +8,6 @@ namespace IMD0180BackAPI.DTO
         public string Login { get; set; }
         [Required]
         public string Password { get; set; }
+        public string Role { get; set; }
     }
 }
